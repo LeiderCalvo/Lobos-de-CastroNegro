@@ -18,6 +18,13 @@
 .env.test.local
 .env.production.local
 
+src/components/App/App.css.map
+src/components/App/App.css
+src/components/WaitingPage/WaitingPage.css.map
+src/components/WaitingPage/WaitingPage.css
+src/components/SplahPage/SplahPage.css.map
+src/components/SplahPage/SplahPage.css
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

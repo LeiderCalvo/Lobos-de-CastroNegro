@@ -1,0 +1,28 @@
+@import '../../utils/vars';
+
+.Waiting{
+    justify-content: center;
+    align-items: center;
+
+    *{
+        margin: 0;
+    }
+
+    h1{
+        margin-top: 20px;
+        font-size: 60px;
+    }
+
+    .titulo{
+        margin: 50px 0 20px;
+    }
+
+    p{
+        margin: 0;
+        text-align: center;
+    }
+
+    .btn{
+        margin-top: 50px;
+    }
+}

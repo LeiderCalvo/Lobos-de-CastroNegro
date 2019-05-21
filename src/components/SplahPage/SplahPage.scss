@@ -1,0 +1,31 @@
+@import '../../utils/vars';
+
+.Spalh{
+    *{
+        margin: 0;
+    }
+
+    img{
+        opacity: 0.5;
+    }
+
+    .titulo{
+        margin: 20px 0 50px;
+    }
+
+    p{
+        margin-top: 50px;
+    }
+
+    .btnContainer{
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        .go{
+            text-decoration: none;
+            color: #000000;
+            font-size: 40px;
+        }
+    }
+}
