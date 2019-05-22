@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "",
+    "sources": [
+        "ShowCharacter.scss",
+        "../../utils/_vars.scss"
+    ],
+    "names": [],
+    "file": "ShowCharacter.css"
+}

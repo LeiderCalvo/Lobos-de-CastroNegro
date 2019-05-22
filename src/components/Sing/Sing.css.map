@@ -1,0 +1,10 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,KAAK,CAAA;EACD,KAAK,EAAE,GAAG;EACV,MAAM,EAAE,IAAI;ECHZ,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,MAAM;EACvB,WAAW,EAAE,MAAM;EACnB,UAAU,EAAE,MAAM;CDErB",
+    "sources": [
+        "Sing.scss",
+        "../../utils/_vars.scss"
+    ],
+    "names": [],
+    "file": "Sing.css"
+}

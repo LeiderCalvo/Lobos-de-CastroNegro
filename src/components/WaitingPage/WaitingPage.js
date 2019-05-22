@@ -11,7 +11,7 @@ class WaitingPage extends Component{
                 <h1>{store.currentConectados}</h1>
                 <h3 className='titulo'>Conectados</h3>
                 <p>Esta sala esta programada para XXXXXX personas. Debemos esperar y mas usuarios</p>
-                <Link to={'/App'} className={store.currentConectados>=store.minConectados? 'btn': 'oculto'}>Jugar</Link>
+                <Link to={'/ShowCharacter'} className={store.currentConectados>=store.minConectados? 'btn': 'oculto'}>Jugar</Link>
             </div>
         );
     }
