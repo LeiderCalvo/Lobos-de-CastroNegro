@@ -5,9 +5,6 @@ import { Link } from 'react-router-dom';
 import api from '../../utils/api';
 import store from '../../stores/store';
 
-let email = '';
-let password = '';
-
 class SingIn extends Component{
 
     constructor(props){
@@ -18,11 +15,15 @@ class SingIn extends Component{
         }
 
         this.handleClick = this.handleClick.bind(this);
+        this.onSingIn = this.onSingIn.bind(this);
+    }
+
+    onSingIn(val){
+        val && this.props.history.push('/Waiting');
     }
 
     handleClick(){
-        //this.props.history.push('/')
-        api.SingIn(this.state.email, this.state.password);
+        api.SingIn(this.state.email, this.state.password, this.onSingIn);
     }
 
     render(){
@@ -39,13 +40,11 @@ class SingIn extends Component{
                    this.setState({password : e.target.value + ''})
                 }}/>
                 
-                {store.initSuccess?
-                    <Link className='btn' to={'/Waiting'}>Iniciar</Link>
-                :
+                {
                 store.isLogin? 
                     <div className='btn' >Cargando</div>
                 :
-                    <div className='btn' onClick={this.handleClick}>Intentar</div>
+                    <div className='btn' onClick={this.handleClick}>Iniciar</div>
                 }
                 <Link to={'/SingUp'} className='link'>Crear una cuenta</Link>
             </div>

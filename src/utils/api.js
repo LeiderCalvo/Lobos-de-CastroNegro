@@ -12,13 +12,45 @@ firebase.initializeApp(firebaseConfig);
 
 
 let database = firebase.database();
-function writeUserData(userId, name, email, imageUrl) {
-    firebase.database().ref('users/' + userId).set({
-      username: name,
-      email: email,
-      profile_picture : imageUrl
-    });
+function RegistrarPersonaje(name, correo, email) {
+    database.ref('personajes').transaction(function(personajes) {
+      if (personajes) {
+        RegistrarUsuario(name, correo, email, personajes[0]);
+        personajes.shift();
+        return personajes;
+      }else{
+        personajes = database.ref('fixedPersonajes');
+        RegistrarUsuario(name, correo, email, personajes[0]);
+        personajes.shift();
+        return personajes;
+      }
+    }/*, function (error, committed, snapshot) {
+      if(error){
+        console.log('transaccion fallo', error);
+      }else if(committed){
+        console.log('ya existe en esa rama');
+      } else {
+        console.log('exitoso');
+      }
+    }*/
+    );
 }
+
+function RegistrarUsuario(name, correo, email, per) {
+  database.ref('users/'+email).transaction(function(usuario) {
+    if (usuario) {
+      usuario.personaje = per;
+      return usuario;
+    }else{
+      return {
+        username: name,
+        email: correo,
+        personaje: per
+      }
+    }
+  });
+}
+
 
 function writeNewPost(uid, username, picture, title, body) {
     // A post entry.
@@ -44,25 +76,6 @@ function writeNewPost(uid, username, picture, title, body) {
 
 //The simplest way to delete data is to call remove() on a reference to the location of that data. update(null) //// You can remove a single listener by passing it as a parameter to off(). Calling off() on the location with no arguments removes all listeners at that location.
 
-//escribir sincrono
-function toggleStar(postRef, uid) {
-  postRef.transaction(function(post) {
-    if (post) {
-      if (post.stars && post.stars[uid]) {
-        post.starCount--;
-        post.stars[uid] = null;
-      } else {
-        post.starCount++;
-        if (!post.stars) {
-          post.stars = {};
-        }
-        post.stars[uid] = true;
-      }
-    }
-    return post;
-  });
-}
-
 
 
 var starCountRef = database.ref();
@@ -78,38 +91,36 @@ starCountRef.on('value', function(snapshot) {
 
 let auth = firebase.auth();
 //https://www.youtube.com/watch?v=CkePdocytWM
-function SingIn(correo, password){
+function SingIn(correo, password, callback){
   if(store.isLogin)return;
   store.setLogin(true);
 
   auth.signInWithEmailAndPassword(correo, password).then(()=>{
-    store.setInitSuccess(true);
     store.setLogin(false);
-    console.log('sing In loginSuccess ', store.initSuccess);
+    callback(true);
+    RegistrarPersonaje('', correo, password);
   }).catch(function(error) {
     if (error) {
-      store.setInitSuccess(false);
       store.setLogin(false);
-      console.log('sing In loginSuccess ', store.initSuccess);
-      console.log(error);
+      callback(false);
+      console.log('sing In error ', error);
     }
   });
 }
 
-function SingUp(correo, password){
+function SingUp(correo, password, name, callback){
   if(store.isLogin)return;
   store.setLogin(true);
 
   auth.createUserWithEmailAndPassword(correo, password).then(()=>{
-    store.setLoginSuccess(true);
+    callback(true);
+    RegistrarPersonaje(name, correo, password);
     store.setLogin(false);
-    console.log('sing Up loginSuccess ', store.loginSuccess);
   }).catch(function(error) {
     if (error) {
-      store.setLoginSuccess(false);
+      callback(false);
       store.setLogin(false);
-      console.log('sing Up loginSuccess ', store.loginSuccess);
-      console.log(error);
+      console.log('sing Up error ', error);
     }
   })
 }

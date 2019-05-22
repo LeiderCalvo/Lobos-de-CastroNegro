@@ -8,8 +8,6 @@ class Store {
             currentConectados: 8,
             minConectados: 8,
             isLogin: false,
-            loginSuccess: false,
-            initSuccess: false
           })
     }
 
@@ -22,18 +20,6 @@ class Store {
     setLogin(val){
         runInAction(()=>{
             this.isLogin = val;
-        });
-    }
-
-    setLoginSuccess(val){
-        runInAction(()=>{
-            this.loginSuccess = val;
-        });
-    }
-
-    setInitSuccess(val){
-        runInAction(()=>{
-            this.initSuccess = val;
         });
     }
 
