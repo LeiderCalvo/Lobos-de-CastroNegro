@@ -1,5 +1,5 @@
 .Sing {
-  width: 80%;
+  width: 60%;
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -11,5 +11,33 @@
       -ms-flex-align: center;
           align-items: center;
   text-align: center;
+}
+
+.Sing .titulo {
+  margin: 80px 0 50px;
+}
+
+.Sing input {
+  border: 0;
+  border-bottom: 2px solid #C8CCD4;
+  background: none;
+  color: gray;
+  -webkit-transition: all .15s ease;
+  transition: all .15s ease;
+  margin-bottom: 25px;
+}
+
+.Sing input:hover {
+  color: black;
+}
+
+.Sing .btn {
+  margin-bottom: 20px;
+}
+
+.Sing .link {
+  text-decoration: none;
+  color: black;
+  font-size: 12px;
 }
 /*# sourceMappingURL=Sing.css.map */

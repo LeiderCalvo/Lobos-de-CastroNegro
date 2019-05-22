@@ -1,9 +1,35 @@
 @import '../../utils/vars';
 
 .Sing{
-    width: 80%;
+    width: 60%;
     height: 100%;
     @include centrado();
 
+    .titulo{
+        margin: 80px 0 50px;
+    }
+
+    input{
+        border: 0;
+        border-bottom: 2px solid #C8CCD4;
+        background: none;
+        color:gray;
+        transition: all .15s ease;
+        margin-bottom: 25px;
+
+        &:hover{
+            color: black;
+        }
+    }
+
+    .btn{
+        margin-bottom: 20px;
+    }
+
+    .link{
+        text-decoration: none;
+        color: black;
+        font-size: 12px;
+    }
     
 }

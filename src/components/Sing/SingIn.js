@@ -21,12 +21,16 @@ class SingIn extends Component{
     }
 
     handleClick(){
+        //this.props.history.push('/')
         api.SingIn(this.state.email, this.state.password);
     }
 
     render(){
         return(
             <div className='page Sing'>
+
+                <div className='titulo'>Sing In</div>
+
                 <input type='text' placeholder='Correo' value={this.state.email} onChange={(e)=>{
                    this.setState({email : e.target.value + ''})
                 }}/>
@@ -43,7 +47,7 @@ class SingIn extends Component{
                 :
                     <div className='btn' onClick={this.handleClick}>Intentar</div>
                 }
-                <Link to={'/SingUp'}>Crear una cuenta</Link>
+                <Link to={'/SingUp'} className='link'>Crear una cuenta</Link>
             </div>
         );
     }

@@ -24,6 +24,8 @@ class SingUp extends Component{
     render(){
         return(
             <div className='page Sing'>
+                <div className='titulo'>Sing Up</div>
+
                 <input type='text' placeholder='Correo' value={this.state.email} onChange={(e)=>{
                    this.setState({email : e.target.value + ''});
                 }}/>
@@ -40,7 +42,7 @@ class SingUp extends Component{
                     <div className='btn' onClick={this.handleClick}>Intentar</div>
                 }
                 
-                <Link to={'/SingIn'}>Ya tengo una cuenta</Link>
+                <Link to={'/SingIn'} className='link'>Ya tengo una cuenta</Link>
             </div>
         );
     }

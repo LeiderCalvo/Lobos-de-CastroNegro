@@ -24,6 +24,8 @@ src/components/WaitingPage/WaitingPage.css.map
 src/components/WaitingPage/WaitingPage.css
 src/components/SplahPage/SplahPage.css.map
 src/components/SplahPage/SplahPage.css
+src/components/Sing/Sing.css.map
+src/components/Sing/Sing.css
 
 npm-debug.log*
 yarn-debug.log*

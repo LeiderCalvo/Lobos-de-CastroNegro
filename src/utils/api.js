@@ -77,7 +77,7 @@ starCountRef.on('value', function(snapshot) {
 
 
 let auth = firebase.auth();
-
+//https://www.youtube.com/watch?v=CkePdocytWM
 function SingIn(correo, password){
   if(store.isLogin)return;
   store.setLogin(true);
