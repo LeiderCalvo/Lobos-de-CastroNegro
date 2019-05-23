@@ -12,17 +12,26 @@ firebase.initializeApp(firebaseConfig);
 
 
 let database = firebase.database();
-function RegistrarPersonaje(name, correo, email) {
+function RegistrarPersonaje(name, correo, password) {
     database.ref('personajes').transaction(function(personajes) {
       if (personajes) {
-        RegistrarUsuario(name, correo, email, personajes[0]);
-        personajes.shift();
-        return personajes;
-      }else{
-        personajes = database.ref('fixedPersonajes');
-        RegistrarUsuario(name, correo, email, personajes[0]);
-        personajes.shift();
-        return personajes;
+        RegistrarUsuario(name, correo, password, personajes[0]);
+
+        if(personajes.length === 1){
+          database.ref('fixedPersonajes').once('value').then(function(snapshot) {
+            personajes = snapshot.val();
+            database.ref().update({personajes : personajes});
+
+            database.ref('contadorSalas').once('value').then(function(snapshot) {
+              let cont = snapshot.val();
+              database.ref().update({contadorSalas : cont+1});
+            });
+            
+          });
+        }else{
+          personajes.shift();
+          return personajes;
+        }
       }
     }/*, function (error, committed, snapshot) {
       if(error){
@@ -36,18 +45,21 @@ function RegistrarPersonaje(name, correo, email) {
     );
 }
 
-function RegistrarUsuario(name, correo, email, per) {
-  database.ref('users/'+email).transaction(function(usuario) {
-    if (usuario) {
-      usuario.personaje = per;
-      return usuario;
-    }else{
-      return {
-        username: name,
-        email: correo,
-        personaje: per
+function RegistrarUsuario(name, correo, password, per) {
+  database.ref('contadorSalas').once('value').then(function(snapshot) {
+    let cont = snapshot.val() + '';
+    database.ref('salas/'+cont+'/users/'+correo.split('@')[0]).transaction(function(usuario) {
+      if (usuario) {
+        database.ref('salas/'+cont+'/users/'+correo.split('@')[0]).update({activo : true, personaje: per});
+      }else{
+        return {
+          username: name,
+          email: correo,
+          activo: true,
+          personaje: per
+        }
       }
-    }
+    });
   });
 }
 
