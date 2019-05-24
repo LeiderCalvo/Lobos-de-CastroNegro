@@ -12,21 +12,23 @@ firebase.initializeApp(firebaseConfig);
 
 
 let database = firebase.database();
+let cont = 0;
 function RegistrarPersonaje(name, correo, password) {
     database.ref('personajes').transaction(function(personajes) {
+      
       if (personajes) {
         RegistrarUsuario(name, correo, password, personajes[0]);
 
         if(personajes.length === 1){
           database.ref('fixedPersonajes').once('value').then(function(snapshot) {
             personajes = snapshot.val();
-            database.ref().update({personajes : personajes});
-
+            
             database.ref('contadorSalas').once('value').then(function(snapshot) {
-              let cont = snapshot.val();
+              cont = snapshot.val();
               database.ref().update({contadorSalas : cont+1});
             });
-            
+            database.ref().update({personajes : personajes})
+            return personajes;
           });
         }else{
           personajes.shift();
@@ -44,22 +46,45 @@ function RegistrarPersonaje(name, correo, password) {
     }*/
     );
 }
+database.ref('contadorSalas').once('value').then(function(snapshot) {
+  cont = snapshot.val() + '';
+  database.ref('salas/'+cont+'/users').on('value', function(snapshot) {
+    //console.log(Object.keys(snapshot.val()).length);
+    //store.setCurrentConectados(Object.keys(snapshot.val()).length);
+});
+});
 
 function RegistrarUsuario(name, correo, password, per) {
   database.ref('contadorSalas').once('value').then(function(snapshot) {
-    let cont = snapshot.val() + '';
-    database.ref('salas/'+cont+'/users/'+correo.split('@')[0]).transaction(function(usuario) {
-      if (usuario) {
-        database.ref('salas/'+cont+'/users/'+correo.split('@')[0]).update({activo : true, personaje: per});
+    cont = snapshot.val() + '';
+
+    database.ref('salas/'+cont+'/cantidadUsuarios').once('value').then(function (cantUsuarios) {
+      if(cantUsuarios.val() != null || cantUsuarios.val() != undefined){
+        writeUserInSala(cantUsuarios.val(), per, name, correo);
       }else{
-        return {
-          username: name,
-          email: correo,
-          activo: true,
-          personaje: per
-        }
+        writeUserInSala(0, per, name, correo);
       }
     });
+
+  });
+}
+
+function writeUserInSala(cantUsuarios, per, name, correo) {
+  database.ref('salas/'+cont+'/users/'+cantUsuarios).transaction(function(usuario) {
+    if (usuario) {
+      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per});
+    }else{
+      database.ref('salas/'+cont).update({turno: 0});
+      database.ref('salas/'+cont).update({cantidadUsuarios: cantUsuarios + 1});
+
+      return {
+        username: name,
+        email: correo,
+        activo: true,
+        personaje: per,
+        turno: cantUsuarios
+      }
+    }
   });
 }
 
