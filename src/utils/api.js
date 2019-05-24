@@ -5,13 +5,23 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import firebaseCredentials from "./firebaseCredentials";
+import { userInfo } from "os";
 
 const firebaseConfig = firebaseCredentials;
 firebase.initializeApp(firebaseConfig);
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////DATABASE
 let database = firebase.database();
+
+database.ref('contadorSalas').once('value').then(function(snapshot) {
+  cont = snapshot.val() + '';
+  database.ref('salas/'+cont+'/users').on('value', function(snapshot) {
+    //console.log(Object.keys(snapshot.val()).length);
+    //store.setCurrentConectados(Object.keys(snapshot.val()).length);
+  });
+});
+
 let cont = 0;
 function RegistrarPersonaje(name, correo, password) {
     database.ref('personajes').transaction(function(personajes) {
@@ -46,13 +56,6 @@ function RegistrarPersonaje(name, correo, password) {
     }*/
     );
 }
-database.ref('contadorSalas').once('value').then(function(snapshot) {
-  cont = snapshot.val() + '';
-  database.ref('salas/'+cont+'/users').on('value', function(snapshot) {
-    //console.log(Object.keys(snapshot.val()).length);
-    //store.setCurrentConectados(Object.keys(snapshot.val()).length);
-});
-});
 
 function RegistrarUsuario(name, correo, password, per) {
   database.ref('contadorSalas').once('value').then(function(snapshot) {
@@ -76,14 +79,15 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
     }else{
       database.ref('salas/'+cont).update({turno: 0});
       database.ref('salas/'+cont).update({cantidadUsuarios: cantUsuarios + 1});
-
-      return {
+      let userInfo = {
         username: name,
         email: correo,
         activo: true,
         personaje: per,
         turno: cantUsuarios
       }
+      store.setUserInfo(userInfo);
+      return userInfo;
     }
   });
 }
@@ -125,17 +129,17 @@ starCountRef.on('value', function(snapshot) {
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////AUTHENTICATION
 let auth = firebase.auth();
 //https://www.youtube.com/watch?v=CkePdocytWM
 function SingIn(correo, password, callback){
   if(store.isLogin)return;
   store.setLogin(true);
 
-  auth.signInWithEmailAndPassword(correo, password).then(()=>{
+  auth.signInWithEmailAndPassword(correo, password).then((a)=>{
     store.setLogin(false);
     callback(true);
-    RegistrarPersonaje('', correo, password);
+    RegistrarPersonaje(a.user.email.split('@')[0], correo, password);
   }).catch(function(error) {
     if (error) {
       store.setLogin(false);

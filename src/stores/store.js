@@ -8,7 +8,20 @@ class Store {
             currentConectados: 8,
             minConectados: 8,
             isLogin: false,
+            userInfo: {
+                username: '',
+                email: '',
+                activo: false,
+                personaje: '',
+                turno: null
+            }
           })
+    }
+
+    setUserInfo(val){
+        runInAction(()=>{
+            this.userInfo = val;
+        });
     }
 
     setCurrentConectados(val){
