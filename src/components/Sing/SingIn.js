@@ -32,8 +32,8 @@ class SingIn extends Component{
 
                 <div className='titulo'>Sing In</div>
 
-                <input type='text' placeholder='Correo' value={this.state.email} onChange={(e)=>{
-                   this.setState({email : e.target.value + ''})
+                <input type='text' placeholder='Usuario' value={this.state.email} onChange={(e)=>{
+                   this.setState({email : e.target.value + '@gmail.com'})
                 }}/>
 
                 <input type='password' placeholder='Password' value={this.state.password} onChange={(e)=>{

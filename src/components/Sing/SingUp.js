@@ -31,11 +31,9 @@ class SingUp extends Component{
         return(
             <div className='page Sing'>
                 <div className='titulo'>Sing Up</div>
-                <input type='text' placeholder='Nombre' value={this.state.name} onChange={(e)=>{
-                   this.setState({name : e.target.value + ''});
-                }}/>
-                <input type='text' placeholder='Correo' value={this.state.email} onChange={(e)=>{
-                   this.setState({email : e.target.value + ''});
+                <input type='text' placeholder='Usuario' value={this.state.email} onChange={(e)=>{
+                    this.setState({name : e.target.value + ''});
+                    this.setState({email : e.target.value + '@gmail.com'});
                 }}/>
                 <input type='password' placeholder='Password' value={this.state.password} onChange={(e)=>{
                     this.setState({password : e.target.value + ''});

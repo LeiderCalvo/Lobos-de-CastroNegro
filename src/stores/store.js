@@ -5,17 +5,105 @@ import api from '../utils/api';
 class Store {
     constructor(){
         extendObservable(this, {
-            currentConectados: 8,
+            currentConectados: 0,
             minConectados: 8,
             isLogin: false,
+            turnoGeneral: 0,
+            ronda : 0,
+            seleccionados : [],
+            asesinado: [],
             userInfo: {
                 username: '',
                 email: '',
                 activo: false,
                 personaje: '',
+                descripcion: '',
+                imagen: '',
                 turno: null
-            }
+            },
+            roomMates: []
           })
+    }
+
+    setAsesinado(val){
+        runInAction(()=>{
+            this.asesinado = val;
+        });
+    }
+
+    setRonda(val){
+        runInAction(()=>{
+            this.ronda = val;
+        });
+    }
+
+    setSeleccionados(val){
+        runInAction(()=>{
+            this.seleccionados = val;
+        });
+    }
+
+    setRoomMates(val){
+        runInAction(()=>{
+            this.roomMates = val;
+        });
+    }
+
+    setTurnoGeneral(val){
+        runInAction(()=>{
+            this.turnoGeneral = val;
+            if(store.userInfo.personaje === 'vidente'){
+                if (val === 4) {
+                    setTimeout(() => {
+                        this.setTurnoGeneral(5);
+                    }, 9000);
+                }
+                if (val === 6) {
+                    setTimeout(() => {
+                        this.setTurnoGeneral(0);
+                    }, 9000);
+                }
+            }
+        });
+    }
+
+    getDescripcion(character){
+        switch (character) {
+            case "lobo":
+                return "matar a todos los aldeanos sin que te descubran";
+        
+            case "aldeano":
+                return "descubrir quien es el lobo";
+
+            case "vidente":
+                return "saber quien es un personaje que escojas";
+
+            case "medico":
+                return "darle inmunidad a algun jugador";
+            
+            default:
+                break;
+        }
+    }
+
+    getTurno(character){
+        switch (character) {
+            case "lobo":
+                return 1;
+        
+            case "aldeano":
+                return 5;
+
+            case "vidente":
+                return 3;
+
+            case "medico":
+                return 2;
+            
+            default:
+                break;
+            
+        }
     }
 
     setUserInfo(val){

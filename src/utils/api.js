@@ -5,7 +5,6 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import firebaseCredentials from "./firebaseCredentials";
-import { userInfo } from "os";
 
 const firebaseConfig = firebaseCredentials;
 firebase.initializeApp(firebaseConfig);
@@ -14,11 +13,36 @@ firebase.initializeApp(firebaseConfig);
 /////////////////////////////////////////////////////////////////////////////////////////////////DATABASE
 let database = firebase.database();
 
+//listeners
 database.ref('contadorSalas').once('value').then(function(snapshot) {
   cont = snapshot.val() + '';
-  database.ref('salas/'+cont+'/users').on('value', function(snapshot) {
-    //console.log(Object.keys(snapshot.val()).length);
-    //store.setCurrentConectados(Object.keys(snapshot.val()).length);
+
+  database.ref('salas/'+cont+'/users').on('value', function(users) {
+    if(users.val()){
+      let array = Object.keys(users.val());
+      let roomMates = [];
+      for (let i = 0; i < array.length; i++) {
+        database.ref('salas/'+cont+'/users/'+array[i]).once('value').then(function (user) {
+          roomMates = [...roomMates, {name: user.val().username, personaje: user.val().personaje, imagen: user.val().imagen}]
+          if(i=== array.length -1){
+            store.setRoomMates(roomMates);
+            //console.log(roomMates);
+            //console.log(store.roomMates);
+          }
+        });
+      }
+      store.setCurrentConectados(array.length);
+    }
+  });
+
+  database.ref('salas/'+cont+'/turno').on('value', function(turnoGeneral) {
+    store.setTurnoGeneral(turnoGeneral.val());
+  });
+  database.ref('salas/'+cont+'/ronda').on('value', function(ronda) {
+    store.setRonda(ronda.val());
+  });
+  database.ref('salas/'+cont+'/seleccionados').on('value', function(seleccionados) {
+    store.setSeleccionados(seleccionados.val());
   });
 });
 
@@ -62,7 +86,7 @@ function RegistrarUsuario(name, correo, password, per) {
     cont = snapshot.val() + '';
 
     database.ref('salas/'+cont+'/cantidadUsuarios').once('value').then(function (cantUsuarios) {
-      if(cantUsuarios.val() != null || cantUsuarios.val() != undefined){
+      if(cantUsuarios.val() !== null || cantUsuarios.val() !== undefined){
         writeUserInSala(cantUsuarios.val(), per, name, correo);
       }else{
         writeUserInSala(0, per, name, correo);
@@ -73,18 +97,23 @@ function RegistrarUsuario(name, correo, password, per) {
 }
 
 function writeUserInSala(cantUsuarios, per, name, correo) {
+  if(cantUsuarios === null)cantUsuarios = 0;
   database.ref('salas/'+cont+'/users/'+cantUsuarios).transaction(function(usuario) {
     if (usuario) {
-      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per});
+      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per, descripcion: store.getDescripcion(per), turno: store.getTurno(per), imagen: "src/imgs/"+per+".png",});
     }else{
       database.ref('salas/'+cont).update({turno: 0});
+      database.ref('salas/'+cont).update({ronda: 0});
+      database.ref('salas/'+cont).update({seleccionados: ''});
       database.ref('salas/'+cont).update({cantidadUsuarios: cantUsuarios + 1});
       let userInfo = {
         username: name,
         email: correo,
         activo: true,
         personaje: per,
-        turno: cantUsuarios
+        descripcion: store.getDescripcion(per),
+        imagen: "src/imgs/"+per+".png",
+        turno: store.getTurno(per)
       }
       store.setUserInfo(userInfo);
       return userInfo;
@@ -92,28 +121,18 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
   });
 }
 
-
-function writeNewPost(uid, username, picture, title, body) {
-    // A post entry.
-    var postData = {
-      author: username,
-      uid: uid,
-      body: body,
-      title: title,
-      starCount: 0,
-      authorPic: picture
-    };
-  
-    // Get a key for a new Post.
-    var newPostKey = firebase.database().ref().child('posts').push().key;
-  
-    // Write the new post's data simultaneously in the posts list and the user's post list.
-    var updates = {};
-    updates['/posts/' + newPostKey] = postData;
-    updates['/user-posts/' + uid + '/' + newPostKey] = postData;
-  
-    return firebase.database().ref().update(updates);
+function setTurnoGeneral(num) {
+  database.ref('salas/'+cont).update({turno: num});
 }
+
+function updateUserSelected(user) {
+  database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
+  if(user !== 'nadie'){
+    let array = store.seleccionados;
+    array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});
+  }
+}
+
 
 //The simplest way to delete data is to call remove() on a reference to the location of that data. update(null) //// You can remove a single listener by passing it as a parameter to off(). Calling off() on the location with no arguments removes all listeners at that location.
 
@@ -168,4 +187,4 @@ function SingUp(correo, password, name, callback){
 
 
 
-export default {SingIn, SingUp};
+export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected};

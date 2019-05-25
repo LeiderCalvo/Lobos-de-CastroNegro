@@ -48,7 +48,7 @@ code {
 }
 
 .page {
-  width: 80%;
+  width: 60%; 
   height: 100%;
   padding: 0 10%;
   display: flex;
