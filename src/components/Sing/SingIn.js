@@ -23,7 +23,7 @@ class SingIn extends Component{
     }
 
     handleClick(){
-        api.SingIn(this.state.email, this.state.password, this.onSingIn);
+        api.SingIn((this.state.email+'@gmail.com'), this.state.password, this.onSingIn);
     }
 
     render(){
@@ -33,7 +33,7 @@ class SingIn extends Component{
                 <div className='titulo'>Sing In</div>
 
                 <input type='text' placeholder='Usuario' value={this.state.email} onChange={(e)=>{
-                   this.setState({email : e.target.value + '@gmail.com'})
+                   this.setState({email : e.target.value + ''})
                 }}/>
 
                 <input type='password' placeholder='Password' value={this.state.password} onChange={(e)=>{

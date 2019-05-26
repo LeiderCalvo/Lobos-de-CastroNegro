@@ -50,7 +50,7 @@ code {
 .page {
   width: 60%; 
   height: 100%;
-  padding: 0 10%;
+  padding: 0 20%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

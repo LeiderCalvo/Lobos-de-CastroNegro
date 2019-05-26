@@ -1,1 +1,57 @@
-@import '../../utils/vars'
+@import '../../utils/vars';
+
+.Juego{
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    padding: 0 10%;
+
+    .header{
+        width: 100%;
+        height: 10%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .imgContainer{
+            width: 22%;
+        }
+    }
+
+    .actions{
+        width: 100%;
+        height: 60%;
+        @include centrado();
+
+        .cards{
+            width: 100%;
+            height: 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+
+            .sel{
+                background-color: red;
+            }
+
+            .card{
+                width: 20%;
+                height: 45%;
+                margin: 0 2.5%;
+                background-color: black;
+                color: white;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+
+    .footer{
+        width: 100%;
+        height: 10%;
+        @include centrado();
+    }
+}

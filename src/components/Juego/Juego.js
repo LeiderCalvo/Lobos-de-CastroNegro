@@ -3,7 +3,7 @@ import { observer }  from 'mobx-react';
 import store from '../../stores/store';
 import api from '../../utils/api';
 //https://www.robinwieruch.de/create-react-app-mobx-decorators/
-//import './Juego.css';
+import './Juego.css';
 
 class Juego extends Component {
 
@@ -29,10 +29,10 @@ class Juego extends Component {
 
   render(){
     return (
-      <div className="Juego">
+      <div className="page Juego">
         <div className='header'>
           <h3 className='titulo'>{store.userInfo.personaje}</h3>
-          <img width= '90px' src="https://juguetes20.com/wp-content/uploads/2018/05/Los-hombres-lobo-de-CastroNegro.png" alt="Italian Trulli"/>
+          <div className='imgContainer'><img width= '100%' src={store.userInfo.imagen} alt="Italian Trulli"/></div>
         </div>
 
         <div className='actions'>
@@ -45,7 +45,13 @@ class Juego extends Component {
         store.turnoGeneral === store.userInfo.turno?
           <div className='cards'>
             {store.roomMates.map((user, index)=>{
-              return <div key={index} className='card' onClick={()=>this.handleClick(user)}>{user.name}</div>
+              return <div key={index} className={store.asesinados && store.asesinados.length >=2? store.seleccionados.map((asesinado)=>{
+                if (asesinado.name === user.name) {
+                  return 'sel card'
+                }else{
+                  return 'card'
+                }
+              }):'card'} onClick={()=>this.handleClick(user)}>{user.name}</div>
             })}
           </div>
         :

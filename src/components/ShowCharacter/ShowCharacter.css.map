@@ -1,6 +1,6 @@
 {
     "version": 3,
-    "mappings": "",
+    "mappings": "AAEA,AAAA,cAAc,CAAA;EACV,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,MAAM;CAC1B",
     "sources": [
         "ShowCharacter.scss",
         "../../utils/_vars.scss"

@@ -35,6 +35,23 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
     }
   });
 
+  database.ref('salas/'+cont+'/asesinados').on('value', function(asesinados) {
+    if(asesinados.val() ){
+      if(asesinados.val().length>=2){
+        if(asesinados.val()[0].name == asesinados.val()[1].name){
+          updateUserSelected(asesinados.val()[0]);
+          store.setAsesinado(asesinados.val());
+        }else{
+          setTimeout(() => {
+            database.ref('salas/'+cont).update({asesinado: []});
+            store.setAsesinado([]);
+          }, 9000);
+        }
+      }
+
+    }
+  });
+
   database.ref('salas/'+cont+'/turno').on('value', function(turnoGeneral) {
     store.setTurnoGeneral(turnoGeneral.val());
   });
@@ -112,7 +129,7 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
         activo: true,
         personaje: per,
         descripcion: store.getDescripcion(per),
-        imagen: "src/imgs/"+per+".png",
+        imagen: "/imgs/"+per+".png",
         turno: store.getTurno(per)
       }
       store.setUserInfo(userInfo);
@@ -131,6 +148,16 @@ function updateUserSelected(user) {
     let array = store.seleccionados;
     array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});
   }
+}
+
+function updateAsesinado(user) {
+  database.ref('salas/'+cont+'/asesinado').once('value').then(function(snapshot) {
+    if(snapshot.val()){
+      database.ref('salas/'+cont).update({asesinado: [...snapshot.val(), user]});
+    }else{
+      database.ref('salas/'+cont).update({asesinado: [user]});
+    }
+  });
 }
 
 
@@ -187,4 +214,4 @@ function SingUp(correo, password, name, callback){
 
 
 
-export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected};
+export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected, updateAsesinado};

@@ -24,7 +24,7 @@ class SingUp extends Component{
     }
 
     handleClick(){
-        api.SingUp(this.state.email, this.state.password, this.state.name, this.onSingUp);
+        api.SingUp((this.state.email+ '@gmail.com'), this.state.password, this.state.name, this.onSingUp);
     }
 
     render(){
@@ -33,7 +33,7 @@ class SingUp extends Component{
                 <div className='titulo'>Sing Up</div>
                 <input type='text' placeholder='Usuario' value={this.state.email} onChange={(e)=>{
                     this.setState({name : e.target.value + ''});
-                    this.setState({email : e.target.value + '@gmail.com'});
+                    this.setState({email : e.target.value + ''});
                 }}/>
                 <input type='password' placeholder='Password' value={this.state.password} onChange={(e)=>{
                     this.setState({password : e.target.value + ''});
