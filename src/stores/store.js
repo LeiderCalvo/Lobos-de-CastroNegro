@@ -19,7 +19,9 @@ class Store {
                 personaje: '',
                 descripcion: '',
                 imagen: '',
-                turno: null
+                turno: null,
+                //isActionDidit: false,
+                id: null
             },
             roomMates: []
           })
@@ -28,6 +30,7 @@ class Store {
     setAsesinado(val){
         runInAction(()=>{
             this.asesinado = val;
+            console.log(val);
         });
     }
 

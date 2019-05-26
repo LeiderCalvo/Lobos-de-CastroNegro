@@ -35,18 +35,25 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
     }
   });
 
-  database.ref('salas/'+cont+'/asesinados').on('value', function(asesinados) {
+  database.ref('salas/'+cont+'/asesinado').on('value', function(asesinados) {
     if(asesinados.val() ){
       if(asesinados.val().length>=2){
-        if(asesinados.val()[0].name == asesinados.val()[1].name){
+        if(asesinados.val()[0].name === asesinados.val()[1].name){
           updateUserSelected(asesinados.val()[0]);
           store.setAsesinado(asesinados.val());
         }else{
           setTimeout(() => {
             database.ref('salas/'+cont).update({asesinado: []});
             store.setAsesinado([]);
-          }, 9000);
+            /*
+            database.ref('salas/'+cont+'/users/'+store.userInfo.id).update({isActionDidit: false});
+            let user = store.userInfo;
+            user.isActionDidit = false;
+            store.setUserInfo(user);*/
+          }, 5000);
         }
+      }else{
+        store.setAsesinado(asesinados.val());
       }
 
     }
@@ -117,7 +124,7 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
   if(cantUsuarios === null)cantUsuarios = 0;
   database.ref('salas/'+cont+'/users/'+cantUsuarios).transaction(function(usuario) {
     if (usuario) {
-      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per, descripcion: store.getDescripcion(per), turno: store.getTurno(per), imagen: "src/imgs/"+per+".png",});
+      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per, descripcion: store.getDescripcion(per), turno: store.getTurno(per), imagen: "src/imgs/"+per+".png"});
     }else{
       database.ref('salas/'+cont).update({turno: 0});
       database.ref('salas/'+cont).update({ronda: 0});
@@ -130,7 +137,9 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
         personaje: per,
         descripcion: store.getDescripcion(per),
         imagen: "/imgs/"+per+".png",
-        turno: store.getTurno(per)
+        turno: store.getTurno(per),
+        //isActionDidit: false,
+        id: cantUsuarios
       }
       store.setUserInfo(userInfo);
       return userInfo;
@@ -144,6 +153,10 @@ function setTurnoGeneral(num) {
 
 function updateUserSelected(user) {
   database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
+  /*database.ref('salas/'+cont+'/users/'+store.userInfo.id).update({isActionDidit: true});
+  let u = store.userInfo;
+  u.isActionDidit = true;
+  store.setUserInfo(u);*/
   if(user !== 'nadie'){
     let array = store.seleccionados;
     array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});

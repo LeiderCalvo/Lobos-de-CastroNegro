@@ -10,21 +10,42 @@ class Juego extends Component {
   constructor(props){
     super(props);
     this.handleClick = this.handleClick.bind(this);
+    this.handleClassSelected = this.handleClassSelected.bind(this);
   }
 
   componentDidMount(){
     if(store.userInfo.personaje === 'vidente'){
       setTimeout(() => {
         api.setTurnoGeneral(1);
+        //api.setTurnoGeneral(store.userInfo.turno);
       }, 9000);
     }
   }
 
   handleClick(user){
+    //if(store.userInfo.isActionDidit === false){
+      if(store.userInfo.personaje === 'lobo'){
+        api.updateAsesinado(user);
+        return;
+      }
+      api.updateUserSelected(user);
+    //}
+  }
+
+  handleClassSelected(user){
     if(store.userInfo.personaje === 'lobo'){
-      api.updateAsesinado(user);
+      if(store.asesinado){
+        store.asesinado.map((asesinado)=>{
+          if (asesinado.name === user.name) {
+            return 'sel card'
+          }
+            return 'card'
+        })
+      }
+      return 'card';
+    }else{
+      return 'card';
     }
-    api.updateUserSelected(user);
   }
 
   render(){
@@ -39,19 +60,13 @@ class Juego extends Component {
         {store.turnoGeneral === 4?
           <div>
             <p className='msj'>ha muerto {store.seleccionados[0].name}</p>
-            <img width= '220px' src="https://juguetes20.com/wp-content/uploads/2018/05/Los-hombres-lobo-de-CastroNegro.png" alt="Italian Trulli"/>
+            <img width= '220px' src={store.userInfo.imagen} alt="Italian Trulli"/>
           </div>
         :
         store.turnoGeneral === store.userInfo.turno?
           <div className='cards'>
             {store.roomMates.map((user, index)=>{
-              return <div key={index} className={store.asesinados && store.asesinados.length >=2? store.seleccionados.map((asesinado)=>{
-                if (asesinado.name === user.name) {
-                  return 'sel card'
-                }else{
-                  return 'card'
-                }
-              }):'card'} onClick={()=>this.handleClick(user)}>{user.name}</div>
+              return <div key={index} className={this.handleClassSelected(user)} onClick={()=>this.handleClick(user)}>{user.name}</div>
             })}
           </div>
         :
