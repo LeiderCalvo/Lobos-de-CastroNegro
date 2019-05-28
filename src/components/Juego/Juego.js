@@ -36,8 +36,8 @@ class Juego extends Component {
 
   handleClick2(user){
     if(store.isActionDidit === false){
-      //api.updateLinchado(user);
-      //store.setIsActionDidIt(true);
+      api.updateLinchado(user);
+      store.setIsActionDidIt(true);
     }
   }
 

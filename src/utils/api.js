@@ -53,6 +53,34 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
     }
   });
 
+  database.ref('salas/'+cont+'/linchado').on('value', function(linchados) {
+    if(linchados.val() ){
+      if(linchados.val().length==store.roomMates.length){
+        store.setLinchado(linchados.val());
+        let coincide = 0;
+        for (let i = linchados.val().length; i > 0; i--) {
+          if(linchados.val()[i].name === linchados.val()[i-1].name){
+            coincide += 1;
+          }
+        }
+
+        if(coincide === linchados.val().length){
+          updateUserSelected(linchados.val()[0]);
+          store.setLinchado(linchados.val());
+        }else{
+          setTimeout(() => {
+            database.ref('salas/'+cont).update({linchado: []});
+            store.setLinchado([]);
+            store.setIsActionDidIt(false);
+          }, 5000);
+        }
+      }else{   
+        store.setLinchado(linchados.val());
+      }
+    }
+  });
+  
+
   database.ref('salas/'+cont+'/turno').on('value', function(turnoGeneral) {
     store.setTurnoGeneral(turnoGeneral.val());
     if(turnoGeneral.val() === 4){
@@ -61,7 +89,6 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           store.setHayMuerto(false);
         }else{
           store.setHayMuerto(true);
-          console.log('deam');
           database.ref('salas/'+cont+'/users/'+snapshot.val()[0].id).set({});/////////////////////////////////////No quiere workear
         }
       });
@@ -175,6 +202,16 @@ function updateAsesinado(user) {
   });
 }
 
+function updateLinchado(user) {
+  database.ref('salas/'+cont+'/linchado').once('value').then(function(snapshot) {
+    if(snapshot.val()){
+      database.ref('salas/'+cont).update({linchado: [...snapshot.val(), user]});
+    }else{
+      database.ref('salas/'+cont).update({linchado: [user]});
+    }
+  });
+}
+
 
 //The simplest way to delete data is to call remove() on a reference to the location of that data. update(null) //// You can remove a single listener by passing it as a parameter to off(). Calling off() on the location with no arguments removes all listeners at that location.
 
@@ -229,4 +266,4 @@ function SingUp(correo, password, name, callback){
 
 
 
-export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected, updateAsesinado};
+export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected, updateAsesinado, updateLinchado};

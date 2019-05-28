@@ -12,6 +12,7 @@ class Store {
             ronda : 0,
             seleccionados : [],
             asesinado: [],
+            linchado: [],
             userInfo: {
                 username: '',
                 email: '',
@@ -43,6 +44,12 @@ class Store {
     setAsesinado(val){
         runInAction(()=>{
             this.asesinado = val;
+        });
+    }
+
+    setLinchado(val){
+        runInAction(()=>{
+            this.linchado = val;
         });
     }
 
