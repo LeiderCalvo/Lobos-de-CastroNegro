@@ -26,8 +26,6 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           roomMates = [...roomMates, {name: user.val().username, personaje: user.val().personaje, imagen: user.val().imagen}]
           if(i=== array.length -1){
             store.setRoomMates(roomMates);
-            //console.log(roomMates);
-            //console.log(store.roomMates);
           }
         });
       }
@@ -38,6 +36,7 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
   database.ref('salas/'+cont+'/asesinado').on('value', function(asesinados) {
     if(asesinados.val() ){
       if(asesinados.val().length>=2){
+        store.setAsesinado(asesinados.val());
         if(asesinados.val()[0].name === asesinados.val()[1].name){
           updateUserSelected(asesinados.val()[0]);
           store.setAsesinado(asesinados.val());
@@ -45,17 +44,12 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           setTimeout(() => {
             database.ref('salas/'+cont).update({asesinado: []});
             store.setAsesinado([]);
-            /*
-            database.ref('salas/'+cont+'/users/'+store.userInfo.id).update({isActionDidit: false});
-            let user = store.userInfo;
-            user.isActionDidit = false;
-            store.setUserInfo(user);*/
+            store.setIsActionDidIt(false);
           }, 5000);
         }
       }else{
         store.setAsesinado(asesinados.val());
       }
-
     }
   });
 
@@ -153,10 +147,7 @@ function setTurnoGeneral(num) {
 
 function updateUserSelected(user) {
   database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
-  /*database.ref('salas/'+cont+'/users/'+store.userInfo.id).update({isActionDidit: true});
-  let u = store.userInfo;
-  u.isActionDidit = true;
-  store.setUserInfo(u);*/
+  store.setIsActionDidIt(false);
   if(user !== 'nadie'){
     let array = store.seleccionados;
     array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});

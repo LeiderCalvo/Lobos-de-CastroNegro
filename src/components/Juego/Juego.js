@@ -23,26 +23,32 @@ class Juego extends Component {
   }
 
   handleClick(user){
-    //if(store.userInfo.isActionDidit === false){
+    if(store.isActionDidit === false){
       if(store.userInfo.personaje === 'lobo'){
         api.updateAsesinado(user);
+        console.log('Va a true');
+        store.setIsActionDidIt(true);
         return;
       }
       api.updateUserSelected(user);
-    //}
+      console.log('Va a true');
+      store.setIsActionDidIt(true);
+    }
   }
 
   handleClassSelected(user){
     if(store.userInfo.personaje === 'lobo'){
+      let exist = false;
       if(store.asesinado){
         store.asesinado.map((asesinado)=>{
           if (asesinado.name === user.name) {
-            return 'sel card'
+           exist = true;
           }
-            return 'card'
-        })
+        });
       }
-      return 'card';
+      let reponse = 'card';
+      if(exist) reponse = 'card sel';
+      return reponse
     }else{
       return 'card';
     }
@@ -60,7 +66,7 @@ class Juego extends Component {
         {store.turnoGeneral === 4?
           <div>
             <p className='msj'>ha muerto {store.seleccionados[0].name}</p>
-            <img width= '220px' src={store.userInfo.imagen} alt="Italian Trulli"/>
+            <img width= '220px' src={store.seleccionados[0].imagen} alt="Italian Trulli"/>
           </div>
         :
         store.turnoGeneral === store.userInfo.turno?

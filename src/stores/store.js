@@ -20,17 +20,22 @@ class Store {
                 descripcion: '',
                 imagen: '',
                 turno: null,
-                //isActionDidit: false,
                 id: null
             },
+            isActionDidit: false,
             roomMates: []
           })
+    }
+
+    setIsActionDidIt(val){
+        runInAction(()=>{
+            this.isActionDidit = val;
+        });
     }
 
     setAsesinado(val){
         runInAction(()=>{
             this.asesinado = val;
-            console.log(val);
         });
     }
 
@@ -55,7 +60,7 @@ class Store {
     setTurnoGeneral(val){
         runInAction(()=>{
             this.turnoGeneral = val;
-            if(store.userInfo.personaje === 'vidente'){
+            //if(store.userInfo.personaje === 'vidente'){
                 if (val === 4) {
                     setTimeout(() => {
                         this.setTurnoGeneral(5);
@@ -66,7 +71,7 @@ class Store {
                         this.setTurnoGeneral(0);
                     }, 9000);
                 }
-            }
+            //}
         });
     }
 
@@ -134,7 +139,7 @@ class Store {
             //Digo que una llamada al api fue echa
             this.loadingCharcter = true;
             var callback = (result) => {
-                console.log('Character aignado', result);
+                //console.log('Character aignado', result);
                 this.character = result;
             }
             api.getCharacter(callback);
