@@ -23,7 +23,7 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
       let roomMates = [];
       for (let i = 0; i < array.length; i++) {
         database.ref('salas/'+cont+'/users/'+array[i]).once('value').then(function (user) {
-          roomMates = [...roomMates, {name: user.val().username, personaje: user.val().personaje, imagen: user.val().imagen}]
+          roomMates = [...roomMates, {name: user.val().username, personaje: user.val().personaje, imagen: user.val().imagen, id: user.val().id}]
           if(i=== array.length -1){
             store.setRoomMates(roomMates);
           }
@@ -55,6 +55,17 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
 
   database.ref('salas/'+cont+'/turno').on('value', function(turnoGeneral) {
     store.setTurnoGeneral(turnoGeneral.val());
+    if(turnoGeneral.val() === 4){
+      database.ref('salas/'+cont+'/seleccionados').once('value').then(function(snapshot) {
+        if(snapshot.val()[0].name === snapshot.val()[1].name){
+          store.setHayMuerto(false);
+        }else{
+          store.setHayMuerto(true);
+          console.log('deam');
+          database.ref('salas/'+cont+'/users/'+snapshot.val()[0].id).set({});/////////////////////////////////////No quiere workear
+        }
+      });
+    }
   });
   database.ref('salas/'+cont+'/ronda').on('value', function(ronda) {
     store.setRonda(ronda.val());

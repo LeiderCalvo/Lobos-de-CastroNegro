@@ -26,13 +26,18 @@ class Juego extends Component {
     if(store.isActionDidit === false){
       if(store.userInfo.personaje === 'lobo'){
         api.updateAsesinado(user);
-        console.log('Va a true');
         store.setIsActionDidIt(true);
         return;
       }
-      api.updateUserSelected(user);
-      console.log('Va a true');
+      api.updateUserSelected(user)
       store.setIsActionDidIt(true);
+    }
+  }
+
+  handleClick2(user){
+    if(store.isActionDidit === false){
+      //api.updateLinchado(user);
+      //store.setIsActionDidIt(true);
     }
   }
 
@@ -63,10 +68,23 @@ class Juego extends Component {
         </div>
 
         <div className='actions'>
-        {store.turnoGeneral === 4?
+        {store.turnoGeneral === 5?
+          <div className='cards'>
+            {store.roomMates.map((user, index)=>{
+              return <div key={index} className='card' onClick={()=>this.handleClick2(user)}>{user.name}</div>
+            })}
+            <div className='card' onClick={()=>this.handleClick2('nadie')}>Nadie</div>
+          </div>
+        :
+        store.turnoGeneral === 4?
+          store.hayMuerto?
           <div>
             <p className='msj'>ha muerto {store.seleccionados[0].name}</p>
             <img width= '220px' src={store.seleccionados[0].imagen} alt="Italian Trulli"/>
+          </div>
+          :
+          <div>
+            <p className='msj'>Nadie Murio esta noche</p>
           </div>
         :
         store.turnoGeneral === store.userInfo.turno?
@@ -84,14 +102,6 @@ class Juego extends Component {
         :
         store.turnoGeneral === 3?
           <p className='msj'>El vidente esta descubriendo a alguien</p>
-        :
-        store.turnoGeneral === 5?
-          <div className='cards'>
-            {store.roomMates.map((user, index)=>{
-              return <div key={index} className='card' onClick={()=>this.handleClick(user)}>{user.name}</div>
-            })}
-            <div className='card' onClick={()=>this.handleClick('nadie')}>Nadie</div>
-          </div>
         :
          store.turnoGeneral === 6?
          <p className='msj'>Resumen, Matamos a: </p>

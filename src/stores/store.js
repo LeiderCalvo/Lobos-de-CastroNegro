@@ -23,8 +23,15 @@ class Store {
                 id: null
             },
             isActionDidit: false,
+            hayMuerto: false,
             roomMates: []
           })
+    }
+
+    setHayMuerto(val){
+        runInAction(()=>{
+            this.hayMuerto = val;
+        });
     }
 
     setIsActionDidIt(val){
@@ -69,6 +76,9 @@ class Store {
                 if (val === 6) {
                     setTimeout(() => {
                         this.setTurnoGeneral(0);
+                        setTimeout(() => {
+                            api.setTurnoGeneral(1);
+                          }, 9000);
                     }, 9000);
                 }
             //}
