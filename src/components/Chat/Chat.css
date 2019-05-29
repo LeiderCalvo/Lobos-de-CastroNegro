@@ -1,0 +1,32 @@
+.Chat .mensajes {
+  width: 100;
+  height: 70%;
+  overflow-y: hidden;
+}
+
+.Chat .mensajes:hover {
+  overflow-y: auto;
+}
+
+.Chat .mensajes::-webkit-scrollbar {
+  width: 5px;
+}
+
+.Chat .mensajes::-webkit-scrollbar-track {
+  background: #888;
+}
+
+.Chat .mensajes::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.Chat .mensajes::-webkit-scrollbar-thumb:hover {
+  background: #f2f2f2;
+}
+
+.Chat .mensajes .mensaje {
+  width: 60%;
+  background-color: black;
+  color: white;
+}
+/*# sourceMappingURL=Chat.css.map */

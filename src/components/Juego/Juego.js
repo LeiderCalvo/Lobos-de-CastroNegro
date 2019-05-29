@@ -59,11 +59,26 @@ class Juego extends Component {
     }
   }
 
+  handleClassSelected2(user){
+      let exist = false;
+      if(store.linchado){
+        store.linchado.map((linchado)=>{
+          if (linchado.name === user.name) {
+           exist = true;
+          }
+        });
+      }
+      let reponse = 'card';
+      if(exist) reponse = 'card sel';
+      return reponse;
+  }
+
   render(){
     return (
       <div className="page Juego">
         <div className='header'>
           <h3 className='titulo'>{store.userInfo.personaje}</h3>
+          <p>{store.isActionDidit? 'ya perro' : 'nada pinche pendejo'}</p>
           <div className='imgContainer'><img width= '100%' src={store.userInfo.imagen} alt="Italian Trulli"/></div>
         </div>
 
@@ -71,9 +86,8 @@ class Juego extends Component {
         {store.turnoGeneral === 5?
           <div className='cards'>
             {store.roomMates.map((user, index)=>{
-              return <div key={index} className='card' onClick={()=>this.handleClick2(user)}>{user.name}</div>
+              return <div key={index} className={this.handleClassSelected2(user)} onClick={()=>this.handleClick2(user)}>{user.name}</div>
             })}
-            <div className='card' onClick={()=>this.handleClick2('nadie')}>Nadie</div>
           </div>
         :
         store.turnoGeneral === 4?

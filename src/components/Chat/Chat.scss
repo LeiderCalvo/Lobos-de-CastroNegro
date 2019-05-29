@@ -1,0 +1,15 @@
+@import '../../utils/vars';
+
+.Chat{
+    .mensajes{
+        width: 100;
+        height: 70%;
+        @include scrollBar();
+
+        .mensaje{
+            width: 60%; 
+            background-color: black;
+            color: white;
+        }
+    }
+}

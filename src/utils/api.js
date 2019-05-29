@@ -55,16 +55,16 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
 
   database.ref('salas/'+cont+'/linchado').on('value', function(linchados) {
     if(linchados.val() ){
+      console.log('2');
       if(linchados.val().length==store.roomMates.length){
         store.setLinchado(linchados.val());
         let coincide = 0;
-        for (let i = linchados.val().length; i > 0; i--) {
+        for (let i = linchados.val().length - 1; i > 0; i--) {
           if(linchados.val()[i].name === linchados.val()[i-1].name){
             coincide += 1;
           }
         }
-
-        if(coincide === linchados.val().length){
+        if(coincide === store.roomMates.length -1 ){
           updateUserSelected(linchados.val()[0]);
           store.setLinchado(linchados.val());
         }else{
@@ -82,6 +82,7 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
   
 
   database.ref('salas/'+cont+'/turno').on('value', function(turnoGeneral) {
+    store.setIsActionDidIt(false);
     store.setTurnoGeneral(turnoGeneral.val());
     if(turnoGeneral.val() === 4){
       database.ref('salas/'+cont+'/seleccionados').once('value').then(function(snapshot) {
@@ -89,11 +90,18 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           store.setHayMuerto(false);
         }else{
           store.setHayMuerto(true);
-          database.ref('salas/'+cont+'/users/'+snapshot.val()[0].id).set({});/////////////////////////////////////No quiere workear
+          database.ref('salas/'+cont+'/users/'+snapshot.val()[0].id).set({});
+          if(snapshot.val()[0].id === store.userInfo.id){
+            window.location.href = '/';
+          }
         }
       });
     }
   });
+  database.ref('salas/'+cont+'/mensajes').on('value', function(mensajes) {
+    store.setMensajes(mensajes.val());
+  });
+
   database.ref('salas/'+cont+'/ronda').on('value', function(ronda) {
     store.setRonda(ronda.val());
   });
@@ -180,12 +188,13 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
 }
 
 function setTurnoGeneral(num) {
+  store.setIsActionDidIt(false);
   database.ref('salas/'+cont).update({turno: num});
 }
 
 function updateUserSelected(user) {
-  database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
   store.setIsActionDidIt(false);
+  database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
   if(user !== 'nadie'){
     let array = store.seleccionados;
     array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});
@@ -208,6 +217,22 @@ function updateLinchado(user) {
       database.ref('salas/'+cont).update({linchado: [...snapshot.val(), user]});
     }else{
       database.ref('salas/'+cont).update({linchado: [user]});
+    }
+  });
+}
+
+function reset() {
+  database.ref('salas/'+cont+'/linchado').set({});
+  database.ref('salas/'+cont+'/asesinado').set({});
+  database.ref('salas/'+cont+'/seleccionados').set({});
+}
+
+function NuevoMsj(string) {
+  database.ref('salas/'+cont+'/mensajes').once('value').then(function(snapshot) {
+    if(snapshot.val()){
+      database.ref('salas/'+cont).update({mensajes: [...snapshot.val(), string]});
+    }else{
+      database.ref('salas/'+cont).update({mensajes: [string]});
     }
   });
 }
@@ -266,4 +291,4 @@ function SingUp(correo, password, name, callback){
 
 
 
-export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected, updateAsesinado, updateLinchado};
+export default {SingIn, SingUp, setTurnoGeneral, updateUserSelected, updateAsesinado, updateLinchado, reset, NuevoMsj};

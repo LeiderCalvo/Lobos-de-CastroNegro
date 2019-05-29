@@ -13,6 +13,7 @@ class Store {
             seleccionados : [],
             asesinado: [],
             linchado: [],
+            mensajes: [],
             userInfo: {
                 username: '',
                 email: '',
@@ -27,6 +28,12 @@ class Store {
             hayMuerto: false,
             roomMates: []
           })
+    }
+
+    setMensajes(val){
+        runInAction(()=>{
+            this.mensajes = val;
+        });
     }
 
     setHayMuerto(val){
@@ -78,13 +85,17 @@ class Store {
                 if (val === 4) {
                     setTimeout(() => {
                         this.setTurnoGeneral(5);
+                        this.setIsActionDidIt(false);
                     }, 9000);
                 }
                 if (val === 6) {
                     setTimeout(() => {
+                        api.reset();
                         this.setTurnoGeneral(0);
+                        store.setIsActionDidIt(false);
                         setTimeout(() => {
                             api.setTurnoGeneral(1);
+                            store.setIsActionDidIt(false);
                           }, 9000);
                     }, 9000);
                 }
