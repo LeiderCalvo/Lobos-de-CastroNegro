@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Lobos-de-CastroNegro/precache-manifest.c3dff3f07b28981000257296dd1f6696.js"
+  "/Lobos-de-CastroNegro/precache-manifest.557d6f86500edcafa6d486150909c0a2.js"
 );
 
 self.addEventListener('message', (event) => {
