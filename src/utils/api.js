@@ -45,15 +45,15 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           updateUserSelected(asesinados.val()[0]);
           store.setAsesinado(asesinados.val());
 
-          if(asesinados.val()[0].id == 7){
+          if(asesinados.val()[0].id === 7){
             store.setThereIsVidente(false);
-          }else if(asesinados.val()[0].id == 4){
+          }else if(asesinados.val()[0].id === 4){
             store.setThereIsMedico(false);
-          }else if(asesinados.val()[0].id == 0 || asesinados.val()[0].id == 5){
+          }else if(asesinados.val()[0].id === 0 || asesinados.val()[0].id === 5){
             lobos += 1;
             if(lobos === 2)
             store.setThereIsLobo(false);
-          }else if(asesinados.val()[0].id == 1 || asesinados.val()[0].id == 2 || asesinados.val()[0].id == 3 || asesinados.val()[0].id == 6){
+          }else if(asesinados.val()[0].id === 1 || asesinados.val()[0].id === 2 || asesinados.val()[0].id === 3 || asesinados.val()[0].id === 6){
             if(aldeanos === 4)store.setThereIsAldeano(false);
           }
       }
@@ -64,15 +64,15 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           updateUserSelected(asesinados.val()[0]);
           store.setAsesinado(asesinados.val());
 
-          if(asesinados.val()[0].id == 7){
+          if(asesinados.val()[0].id === 7){
             store.setThereIsVidente(false);
-          }else if(asesinados.val()[0].id == 4){
+          }else if(asesinados.val()[0].id === 4){
             store.setThereIsMedico(false);
-          }else if(asesinados.val()[0].id == 0 || asesinados.val()[0].id == 5){
+          }else if(asesinados.val()[0].id === 0 || asesinados.val()[0].id === 5){
             lobos += 1;
             if(lobos === 2)
             store.setThereIsLobo(false);
-          }else if(asesinados.val()[0].id == 1 || asesinados.val()[0].id == 2 || asesinados.val()[0].id == 3 || asesinados.val()[0].id == 6){
+          }else if(asesinados.val()[0].id === 1 || asesinados.val()[0].id === 2 || asesinados.val()[0].id === 3 || asesinados.val()[0].id === 6){
             if(aldeanos === 4)store.setThereIsAldeano(false);
           }
         }else{
@@ -90,7 +90,7 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
 
   database.ref('salas/'+cont+'/linchado').on('value', function(linchados) {
     if(linchados.val() ){
-      if(linchados.val().length==store.roomMates.length){
+      if(linchados.val().length===store.roomMates.length){
         store.setLinchado(linchados.val());
         let coincide = 0;
         for (let i = linchados.val().length - 1; i > 0; i--) {
@@ -104,19 +104,19 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           store.setLinchado(linchados.val());
 
           database.ref('salas/'+cont+'/users/'+linchados.val()[0].id).set({});
-          if(linchados.val()[0].id == 7){
+          if(linchados.val()[0].id === 7){
             store.setThereIsVidente(false);
-          }else if(linchados.val()[0].id == 4){
+          }else if(linchados.val()[0].id === 4){
             store.setThereIsMedico(false);
-          }else if(linchados.val()[0].id == 0 || linchados.val()[0].id == 5){
+          }else if(linchados.val()[0].id === 0 || linchados.val()[0].id === 5){
             lobos += 1;
             if(lobos === 2)store.setThereIsLobo(false);
-          }else if(linchados.val()[0].id == 1 || linchados.val()[0].id == 2 || linchados.val()[0].id == 3 || linchados.val()[0].id == 6){
+          }else if(linchados.val()[0].id === 1 || linchados.val()[0].id === 2 || linchados.val()[0].id === 3 || linchados.val()[0].id === 6){
             if(aldeanos === 4)store.setThereIsAldeano(false);
           }
 
           if(linchados.val()[0].id === store.userInfo.id){
-            window.location.href = '/';
+            window.location.href = './';
           }
         }else{
           setTimeout(() => {
@@ -143,7 +143,7 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
           store.setHayMuerto(true);
           database.ref('salas/'+cont+'/users/'+snapshot.val()[0].id).set({});
           if(snapshot.val()[0].id === store.userInfo.id){
-            window.location.href = '/';
+            window.location.href = './';
           }
         }
       });
@@ -215,7 +215,7 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
   if(cantUsuarios === null)cantUsuarios = 0;
   database.ref('salas/'+cont+'/users/'+cantUsuarios).transaction(function(usuario) {
     if (usuario) {
-      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per, descripcion: store.getDescripcion(per), turno: store.getTurno(per), imagen: "src/imgs/"+per+".png"});
+      return database.ref('salas/'+cont+'/users/'+cantUsuarios).update({activo : true, personaje: per, descripcion: store.getDescripcion(per), turno: store.getTurno(per), imagen: "./imgs/"+per+".png"});
     }else{
       database.ref('salas/'+cont).update({turno: 0});
       database.ref('salas/'+cont).update({ronda: 0});
@@ -227,7 +227,7 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
         activo: true,
         personaje: per,
         descripcion: store.getDescripcion(per),
-        imagen: "/imgs/"+per+".png",
+        imagen: "./imgs/"+per+".png",
         turno: store.getTurno(per),
         //isActionDidit: false,
         id: cantUsuarios

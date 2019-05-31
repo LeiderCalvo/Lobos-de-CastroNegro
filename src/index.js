@@ -19,7 +19,7 @@ import Chat from './components/Chat/Chat';
 import Win from './components/Win/Win';
 
   const routing = (
-    <Router>
+    <Router basename="/Lobos-de-CastroNegro">
         <Switch>
             <Route exact path="/" component={SplahPage} />
             <Route path="/SingIn" component={SingIn} />

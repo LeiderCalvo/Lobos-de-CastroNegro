@@ -37,13 +37,13 @@ class Store {
     setThereIsLobo(val){
         runInAction(()=>{
             this.thereIsLobo = val;
-            if(val === false) window.location.href = '/Win/ALDEANOS';
+            if(val === false) window.location.href = './Win/ALDEANOS';
         });
     }
     setThereIsAldeano(val){
         runInAction(()=>{
             this.thereIsAldeano = val;
-            if(val === false) window.location.href = '/Win/LOBOS';
+            if(val === false) window.location.href = './Win/LOBOS';
         });
     }
     setThereIsMedico(val){

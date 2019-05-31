@@ -79,6 +79,7 @@ class Juego extends Component {
       <div className="page Juego">
         <div className='header'>
           <h3 className='titulo'>{store.userInfo.personaje}</h3>
+          <p>{store.turnoGeneral === store.userInfo.turno && store.isActionDidit? '': 'Dale'}</p>
           <div className='imgContainer'><img width= '100%' src={store.userInfo.imagen} alt="Italian Trulli"/></div>
         </div>
 
@@ -149,7 +150,7 @@ class Juego extends Component {
         }
         </div>
 
-        <Link to={'/Chat'} className='flotante'> . </Link>
+        <img width= '30px' src="./imgs/chat.png" className="flotante"/><Link to={'/Chat'} className='flotante'></Link>
       </div>
     );
   }
