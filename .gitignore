@@ -28,6 +28,8 @@ src/components/Sing/Sing.css.map
 src/components/Sing/Sing.css
 src/components/ShowCharacter/ShowCharacter.css.map
 src/components/ShowCharacter/ShowCharacter.css
+src/components/Win/Win.css.map
+src/components/Win/Win.css
 
 src/utils/firebaseCredentials.js
 

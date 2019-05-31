@@ -26,8 +26,36 @@ class Store {
             },
             isActionDidit: false,
             hayMuerto: false,
-            roomMates: []
+            roomMates: [],
+
+            thereIsLobo: true,
+            thereIsAldeano: true,
+            thereIsMedico: true,
+            thereIsVidente: true,
           })
+    }
+    setThereIsLobo(val){
+        runInAction(()=>{
+            this.thereIsLobo = val;
+            if(val === false) window.location.href = '/Win/ALDEANOS';
+        });
+    }
+    setThereIsAldeano(val){
+        runInAction(()=>{
+            this.thereIsAldeano = val;
+            if(val === false) window.location.href = '/Win/LOBOS';
+        });
+    }
+    setThereIsMedico(val){
+        runInAction(()=>{
+            this.thereIsMedico = val;
+        });
+    }
+
+    setThereIsVidente(val){
+        runInAction(()=>{
+            this.thereIsVidente = val;
+        });
     }
 
     setMensajes(val){

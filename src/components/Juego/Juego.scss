@@ -54,4 +54,15 @@
         height: 10%;
         @include centrado();
     }
+
+    .flotante{
+        position: fixed;
+        bottom: 70px;
+        right: 50px;
+        background: black;
+        padding: 10px 15px;
+        border-radius: 50%;
+        color: white;
+        text-decoration: none;
+    }
 }

@@ -1,7 +1,9 @@
 .Chat .mensajes {
-  width: 100;
-  height: 70%;
+  width: 100%;
+  height: 60%;
+  overflow-x: hidden;
   overflow-y: hidden;
+  margin: 10% 0;
 }
 
 .Chat .mensajes:hover {
@@ -25,8 +27,74 @@
 }
 
 .Chat .mensajes .mensaje {
-  width: 60%;
-  background-color: black;
-  color: white;
+  width: 90%;
+  min-height: 20px;
+  color: gray;
+}
+
+.Chat .mensajes .mensaje2 {
+  width: 90%;
+  min-height: 20px;
+  color: gray;
+  text-align: right;
+}
+
+.Chat .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  margin-top: 10%;
+}
+
+.Chat .container .btnContainer {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin: 0;
+}
+
+.Chat .container .btnContainer .go {
+  text-decoration: none;
+  color: #000000;
+  font-size: 40px;
+  margin-bottom: 0;
+}
+
+.Chat .container2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 10%;
+  width: 100%;
+}
+
+.Chat .container2 input {
+  width: 55%;
+  padding: 5px;
+}
+
+.Chat .container2 .btn {
+  width: 30%;
+  padding: 2px;
 }
 /*# sourceMappingURL=Chat.css.map */

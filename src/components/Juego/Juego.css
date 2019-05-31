@@ -97,4 +97,15 @@
           align-items: center;
   text-align: center;
 }
+
+.Juego .flotante {
+  position: fixed;
+  bottom: 70px;
+  right: 50px;
+  background: black;
+  padding: 10px 15px;
+  border-radius: 50%;
+  color: white;
+  text-decoration: none;
+}
 /*# sourceMappingURL=Juego.css.map */

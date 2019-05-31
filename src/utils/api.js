@@ -10,6 +10,9 @@ const firebaseConfig = firebaseCredentials;
 firebase.initializeApp(firebaseConfig);
 
 
+let lobos = 0;
+let aldeanos = 0;
+
 /////////////////////////////////////////////////////////////////////////////////////////////////DATABASE
 let database = firebase.database();
 
@@ -35,11 +38,43 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
 
   database.ref('salas/'+cont+'/asesinado').on('value', function(asesinados) {
     if(asesinados.val() ){
+
+      if(lobos===1){
+        store.setAsesinado(asesinados.val());
+
+          updateUserSelected(asesinados.val()[0]);
+          store.setAsesinado(asesinados.val());
+
+          if(asesinados.val()[0].id == 7){
+            store.setThereIsVidente(false);
+          }else if(asesinados.val()[0].id == 4){
+            store.setThereIsMedico(false);
+          }else if(asesinados.val()[0].id == 0 || asesinados.val()[0].id == 5){
+            lobos += 1;
+            if(lobos === 2)
+            store.setThereIsLobo(false);
+          }else if(asesinados.val()[0].id == 1 || asesinados.val()[0].id == 2 || asesinados.val()[0].id == 3 || asesinados.val()[0].id == 6){
+            if(aldeanos === 4)store.setThereIsAldeano(false);
+          }
+      }
+
       if(asesinados.val().length>=2){
         store.setAsesinado(asesinados.val());
         if(asesinados.val()[0].name === asesinados.val()[1].name){
           updateUserSelected(asesinados.val()[0]);
           store.setAsesinado(asesinados.val());
+
+          if(asesinados.val()[0].id == 7){
+            store.setThereIsVidente(false);
+          }else if(asesinados.val()[0].id == 4){
+            store.setThereIsMedico(false);
+          }else if(asesinados.val()[0].id == 0 || asesinados.val()[0].id == 5){
+            lobos += 1;
+            if(lobos === 2)
+            store.setThereIsLobo(false);
+          }else if(asesinados.val()[0].id == 1 || asesinados.val()[0].id == 2 || asesinados.val()[0].id == 3 || asesinados.val()[0].id == 6){
+            if(aldeanos === 4)store.setThereIsAldeano(false);
+          }
         }else{
           setTimeout(() => {
             database.ref('salas/'+cont).update({asesinado: []});
@@ -55,7 +90,6 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
 
   database.ref('salas/'+cont+'/linchado').on('value', function(linchados) {
     if(linchados.val() ){
-      console.log('2');
       if(linchados.val().length==store.roomMates.length){
         store.setLinchado(linchados.val());
         let coincide = 0;
@@ -64,9 +98,26 @@ database.ref('contadorSalas').once('value').then(function(snapshot) {
             coincide += 1;
           }
         }
+
         if(coincide === store.roomMates.length -1 ){
           updateUserSelected(linchados.val()[0]);
           store.setLinchado(linchados.val());
+
+          database.ref('salas/'+cont+'/users/'+linchados.val()[0].id).set({});
+          if(linchados.val()[0].id == 7){
+            store.setThereIsVidente(false);
+          }else if(linchados.val()[0].id == 4){
+            store.setThereIsMedico(false);
+          }else if(linchados.val()[0].id == 0 || linchados.val()[0].id == 5){
+            lobos += 1;
+            if(lobos === 2)store.setThereIsLobo(false);
+          }else if(linchados.val()[0].id == 1 || linchados.val()[0].id == 2 || linchados.val()[0].id == 3 || linchados.val()[0].id == 6){
+            if(aldeanos === 4)store.setThereIsAldeano(false);
+          }
+
+          if(linchados.val()[0].id === store.userInfo.id){
+            window.location.href = '/';
+          }
         }else{
           setTimeout(() => {
             database.ref('salas/'+cont).update({linchado: []});
@@ -189,12 +240,35 @@ function writeUserInSala(cantUsuarios, per, name, correo) {
 
 function setTurnoGeneral(num) {
   store.setIsActionDidIt(false);
-  database.ref('salas/'+cont).update({turno: num});
+  if(num === 2 && store.thereIsMedico === false){
+    if(store.thereIsVidente){
+      database.ref('salas/'+cont).update({turno: num + 1});
+    }else{
+      database.ref('salas/'+cont).update({turno: num + 2});
+    }
+  }else if(num === 3 && store.thereIsVidente === false){
+    database.ref('salas/'+cont).update({turno: 4});
+  }else {
+    database.ref('salas/'+cont).update({turno: num});
+  }
 }
 
 function updateUserSelected(user) {
   store.setIsActionDidIt(false);
-  database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
+  if(store.turnoGeneral + 1 === 2 && store.thereIsMedico === false){
+    if(store.thereIsVidente){
+      database.ref('salas/'+cont).update({turno: store.turnoGeneral + 2});
+    }else{
+      database.ref('salas/'+cont).update({turno: store.turnoGeneral + 3});
+    }
+  }else if(store.turnoGeneral + 1 === 3 && store.thereIsVidente === false){
+    database.ref('salas/'+cont).update({turno: 4});
+  }else {
+    database.ref('salas/'+cont).update({turno: store.turnoGeneral + 1});
+  }
+
+
+
   if(user !== 'nadie'){
     let array = store.seleccionados;
     array? database.ref('salas/'+cont).update({seleccionados: [...array, user]}) : database.ref('salas/'+cont).update({seleccionados: [ user]});
@@ -222,9 +296,8 @@ function updateLinchado(user) {
 }
 
 function reset() {
-  database.ref('salas/'+cont+'/linchado').set({});
-  database.ref('salas/'+cont+'/asesinado').set({});
-  database.ref('salas/'+cont+'/seleccionados').set({});
+  database.ref('salas/'+cont).update({linchado: null, asesinado: null, seleccionados: null});
+  store.setMensajes([]);
 }
 
 function NuevoMsj(string) {

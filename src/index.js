@@ -16,6 +16,7 @@ import SingIn from './components/Sing/SingIn';
 import SingUp from './components/Sing/SingUp';
 import Juego from './components/Juego/Juego';
 import Chat from './components/Chat/Chat';
+import Win from './components/Win/Win';
 
   const routing = (
     <Router>
@@ -27,6 +28,7 @@ import Chat from './components/Chat/Chat';
             <Route path='/ShowCharacter' component={ShowCharacter}/>
             <Route path="/Juego" component={Juego} />
             <Route path="/Chat" component={Chat} />
+            <Route path="/Win/:who" component={Win} />
         </Switch>
     </Router>
   )

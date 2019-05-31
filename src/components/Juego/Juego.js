@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer }  from 'mobx-react';
+import { Link } from 'react-router-dom';
 import store from '../../stores/store';
 import api from '../../utils/api';
 //https://www.robinwieruch.de/create-react-app-mobx-decorators/
@@ -78,7 +79,6 @@ class Juego extends Component {
       <div className="page Juego">
         <div className='header'>
           <h3 className='titulo'>{store.userInfo.personaje}</h3>
-          <p>{store.isActionDidit? 'ya perro' : 'nada pinche pendejo'}</p>
           <div className='imgContainer'><img width= '100%' src={store.userInfo.imagen} alt="Italian Trulli"/></div>
         </div>
 
@@ -93,8 +93,8 @@ class Juego extends Component {
         store.turnoGeneral === 4?
           store.hayMuerto?
           <div>
-            <p className='msj'>ha muerto {store.seleccionados[0].name}</p>
-            <img width= '220px' src={store.seleccionados[0].imagen} alt="Italian Trulli"/>
+            <p className='msj'>ha muerto {store.seleccionados[0].name && store.seleccionados[0].name}</p>
+            <img width= '220px' src={store.seleccionados[0].imagen && store.seleccionados[0].imagen} alt="Italian Trulli"/>
           </div>
           :
           <div>
@@ -118,7 +118,11 @@ class Juego extends Component {
           <p className='msj'>El vidente esta descubriendo a alguien</p>
         :
          store.turnoGeneral === 6?
-         <p className='msj'>Resumen, Matamos a: </p>
+         <div>
+           <p className='msj'>Resumen, Matamos a: {store.linchado[0].personaje}</p>
+           <p className='msj'>{store.linchado[0].name}</p>
+           <img width= '220px' src={store.linchado[0].imagen} alt="Italian Trulli"/>
+         </div>
         :
         store.turnoGeneral === 0 &&
           <p className='msj'>Es de noche y todos dormimos</p>
@@ -131,11 +135,11 @@ class Juego extends Component {
         {store.turnoGeneral === 4?
           <p className='msj'>Es de dìa</p>
         :
-        store.turnoGeneral === store.userInfo.turno?
-          <p className='msj'>Es tu turno, no peritas que los demas descubran quiene eres</p>
-        :
         store.turnoGeneral === 5?
           <p className='msj'>Es momento de decidir quien es el lobo</p>
+        :
+        store.turnoGeneral === store.userInfo.turno?
+          <p className='msj'>{store.isActionDidit? 'Gracias por seleccionar' : 'Es tu turno, no peritas que los demas descubran quiene eres'}</p>
         :
         store.turnoGeneral === 6?
           <p className='msj'>Es de dìa</p>
@@ -144,6 +148,8 @@ class Juego extends Component {
           <p className='msj'>Debes dormir</p>
         }
         </div>
+
+        <Link to={'/Chat'} className='flotante'> {'x'} </Link>
       </div>
     );
   }
