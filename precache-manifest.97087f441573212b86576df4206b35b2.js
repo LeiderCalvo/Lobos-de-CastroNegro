@@ -1,19 +1,19 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "088ee9a11cf0cdd320ce93036d391537",
+    "revision": "3521d77386571fbbc15dd7078be828d4",
     "url": "/Lobos-de-CastroNegro/index.html"
   },
   {
-    "revision": "387e8388e9d008dfb42b",
-    "url": "/Lobos-de-CastroNegro/static/css/main.674451f0.chunk.css"
+    "revision": "85c13906919e712b1ffe",
+    "url": "/Lobos-de-CastroNegro/static/css/main.2e14c566.chunk.css"
   },
   {
     "revision": "b4525986db7fc58cd691",
     "url": "/Lobos-de-CastroNegro/static/js/2.7cfa73fe.chunk.js"
   },
   {
-    "revision": "387e8388e9d008dfb42b",
-    "url": "/Lobos-de-CastroNegro/static/js/main.fc9a2eed.chunk.js"
+    "revision": "85c13906919e712b1ffe",
+    "url": "/Lobos-de-CastroNegro/static/js/main.6d2989f8.chunk.js"
   },
   {
     "revision": "3a720e4a90260157eeeb",

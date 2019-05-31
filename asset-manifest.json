@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Lobos-de-CastroNegro/static/css/main.674451f0.chunk.css",
-    "main.js": "/Lobos-de-CastroNegro/static/js/main.fc9a2eed.chunk.js",
-    "main.js.map": "/Lobos-de-CastroNegro/static/js/main.fc9a2eed.chunk.js.map",
+    "main.css": "/Lobos-de-CastroNegro/static/css/main.2e14c566.chunk.css",
+    "main.js": "/Lobos-de-CastroNegro/static/js/main.6d2989f8.chunk.js",
+    "main.js.map": "/Lobos-de-CastroNegro/static/js/main.6d2989f8.chunk.js.map",
     "runtime~main.js": "/Lobos-de-CastroNegro/static/js/runtime~main.ad4a2392.js",
     "runtime~main.js.map": "/Lobos-de-CastroNegro/static/js/runtime~main.ad4a2392.js.map",
     "static/js/2.7cfa73fe.chunk.js": "/Lobos-de-CastroNegro/static/js/2.7cfa73fe.chunk.js",
     "static/js/2.7cfa73fe.chunk.js.map": "/Lobos-de-CastroNegro/static/js/2.7cfa73fe.chunk.js.map",
     "index.html": "/Lobos-de-CastroNegro/index.html",
-    "precache-manifest.e49ba7240846d5c966e99431315053e6.js": "/Lobos-de-CastroNegro/precache-manifest.e49ba7240846d5c966e99431315053e6.js",
+    "precache-manifest.97087f441573212b86576df4206b35b2.js": "/Lobos-de-CastroNegro/precache-manifest.97087f441573212b86576df4206b35b2.js",
     "service-worker.js": "/Lobos-de-CastroNegro/service-worker.js",
-    "static/css/main.674451f0.chunk.css.map": "/Lobos-de-CastroNegro/static/css/main.674451f0.chunk.css.map"
+    "static/css/main.2e14c566.chunk.css.map": "/Lobos-de-CastroNegro/static/css/main.2e14c566.chunk.css.map"
   }
 }
