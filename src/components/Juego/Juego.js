@@ -149,7 +149,7 @@ class Juego extends Component {
         }
         </div>
 
-        <Link to={'/Chat'} className='flotante'> {'x'} </Link>
+        <Link to={'/Chat'} className='flotante'> . </Link>
       </div>
     );
   }

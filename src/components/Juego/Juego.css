@@ -100,11 +100,11 @@
 
 .Juego .flotante {
   position: fixed;
-  bottom: 70px;
-  right: 50px;
-  background: black;
-  padding: 10px 15px;
-  border-radius: 50%;
+  bottom: 40px;
+  right: 40px;
+  background-image: url("/imgs/chat.png");
+  background-size: cover;
+  padding: 7px 15px;
   color: white;
   text-decoration: none;
 }
